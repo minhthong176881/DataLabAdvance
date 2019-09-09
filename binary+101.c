@@ -1,35 +1,38 @@
 #include <stdio.h>
-
-int x[100];
 int n;
-
-int check(int v, int k) {
-    // if((x[k - 2] == 1 && x[k - 1] == 0 && x[k] == 1) || (x[k + 2] == 1 && x[k + 1] == 0 && x[k] == 1))
-	    return 1;
-    // return 0;
+int x[100];
+// int c = 0;
+int check(int *arr, int size){
+  int valid  = 0;
+  for (int i = 0; i < size - 2; i++)
+  {
+    if(arr[i] == 1 && arr[i + 1] == 0 && arr[i + 2] == 1 ) valid =1;
+  }
+  return valid;
 }
-
-void solution () {
-	int i;
-	for (i = 1; i <= n; i++) {
-		printf ("%d", x[i]);
-    }
-	printf ("\n");
+ 
+void view(){
+  // c++;
+  // printf("[%.2d]: ",c);
+  for(int i = 1; i <= n; i++){
+    printf("%d ", x[i]);
+  }
+  printf("\n");
 }
-
-void TRY(int k) {
-	int v;
-	for(v = 0; v <= 1; v++) {
-		if(check (v, k)) {
-			x[k] = v;
-			if(k == n) solution ();
-			else TRY(k + 1);
-		}
-	}
+ 
+void TRY(int k){
+  int v;
+  for(v = 0; v <= 1; v++){
+      x[k] = v;
+      if(k == n) {
+        if(check(x, n + 1))
+          view();
+      }
+      else TRY(k + 1);
+  }
 }
-
-int main () {
-	n = 5;
-	TRY(1);
-	return 0;
+ 
+int main(){
+  n = 5;
+  TRY(1);
 }
