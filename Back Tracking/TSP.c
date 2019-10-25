@@ -68,12 +68,11 @@ void solve(){
 	}
 	x[0] = 0; /* starting point*/
 	TRY(1);
-	printf("%d\n", f_best);
+	printf("%d", f_best);
 }
 
 int main(){
 	input();
-	printf("==========\n");
 	solve();
 	return 0;
 }
