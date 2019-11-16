@@ -6,8 +6,8 @@ using namespace std;
 
 int n, k1, k2;
 long long m;
-int s[maxN];
-int s1[maxN];
+int s[maxN]; // number of solution with days 1, 2, ..., i in which last bit = 0
+int s1[maxN]; // number of solution with days 1, 2, ..., i in which last bit = 1
 
 void input(){
     cin >> n >> k1 >> k2;
