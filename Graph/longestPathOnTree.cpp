@@ -1,59 +1,70 @@
-#include<iostream>
-#include<vector>
-#include<queue>
-#define Max_N 106
+#include <bits/stdc++.h>
+#define oo 999999999
+#define MOD 1000000007
+#define MAX 100030
 
 using namespace std;
+typedef unsigned long long ull;
 
-int N;
-int d[Max_N] = {-1};
-vector<int> A[Max_N];
-vector<int> W[Max_N];
+int n;
+vector<int> adj[MAX][2];
+int d[MAX];
+int dmax, vmax;
+int result;
 
-void input(){
-    cin >> N;
-    for(int i = 0; i < N; i++){
-        int u, v, w;
-        cin >> u >> v >> w;
-        A[u].push_back(v);
-        A[v].push_back(u);
-    }
+
+void output () {
+	printf("%d\n", result);
 }
 
-int BFS(int s){
-    queue<int> Q;
-    Q.push(s);
-    d[s] = 0;
-    while(!Q.empty()){
-        int v = Q.front();
-        Q.pop();
-        for(int i = 0; i < A[v].size(); i++){
-            int x = A[v][i];
-            int w = W[v][i];
-            if(d[x] == -1){
-                Q.push(x);
-                d[x] = d[v] + w;
-            }
-        }
-    }
-    int maxDis = 0;
-    for(int i = 0; i < s; i++){
-        if(d[i] > maxDis){
-            maxDis = d[i];
-        }
-    }
-    cout << maxDis << endl;
-    return maxDis;
+void longestBFS (int vertice) {
+	deque<int> q;
+	for (int i = 1; i <= n; ++i) {
+		d[i] = -1;
+	}
+	q.push_back(vertice);
+	d[vertice] = 0;
+	while (!q.empty()) {
+		int u = q.front();
+		q.pop_front();
+		for (int i = 0; i < adj[u][0].size(); ++i) {
+			int v = adj[u][0][i];
+			int w = adj[u][1][i];
+			if (d[v] < 0) {
+				q.push_back(v);
+				d[v] = d[u] + w;
+				if (d[v] > dmax) {
+					dmax = d[v];
+					vmax = v;
+				}
+			}
+		}
+	}
 }
 
-int main(){
-    input();
-    for(int s = 1; s <= N; s++){
-        if(d[s] == -1){
-            BFS(s);
-        }
-    }
-    // int t1 = BFS(0);
-    // int t2 = BFS(t1.first);
-    return 0;
+void solve () {
+	longestBFS(1);				// Phase 1: longest path from 1 to x
+	longestBFS(vmax);			// Phase 2: longest path form x to y
+	result = dmax;				// Longest path is distance from x to y
+}
+
+void input () {
+	scanf("%d", &n);
+	int u, v, w;
+	for (int i = 0; i < n-1; ++i) {
+		scanf("%d%d%d", &u, &v, &w);
+		adj[u][0].push_back(v);
+		adj[u][1].push_back(w);
+		adj[v][0].push_back(u);
+		adj[v][1].push_back(w);
+	}
+}
+
+int main () {
+	// freopen("inp", "r", stdin);
+	// freopen("out", "w", stdout);
+	input();
+	solve();
+	output();
+	return 0;
 }

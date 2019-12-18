@@ -1,57 +1,69 @@
-#include<iostream>
-#include<vector>
-#include<queue>
-
-#define Max_N 100001
+#include <bits/stdc++.h>
+#define oo 999999999
+#define MOD 1000000007
+#define MAX 1000000
 
 using namespace std;
+typedef unsigned long long ull;
 
-int N, M;
-vector<int> A[Max_N];
-int d[Max_N];
+int n, m;
+vector<int> adj[MAX];
+int d[MAX];			// time
+int result;
 
-void input(){
-    cin >> N >> M;
-    for(int k = 1; k <= N; k++){
-        int u, v;
-        cin >> u >> v;
-        A[u].push_back(v);
-        A[v].push_back(u);
-    }
+void output () {
+	printf("%d\n", result);
 }
 
-int BFS(int s){
-    queue<int> Q;
-    Q.push(s);
-    d[s] = 0;
-    while(Q.empty()){
-        int v = Q.front();
-        Q.pop();
-        for(int x = 0; x < A[v].size(); x++){
-            if(d[x] > -1){
-                if(d[x] % 2 == d[A[v][x]] % 2) return 0;
-            }
-            else{
-                Q.push(A[v][x]);
-                d[A[v][x]] = d[v] + 1;
-            }
-        }
-    }
-    return 1;
+void BFS (int vertice) {
+	deque<int> q;
+	for (int i = 1; i <= n; ++i)
+		d[i] = -1;
+	q.push_back(vertice);
+	d[vertice] = 0;
+	while (!q.empty()) {
+		int u = q.front();
+		q.pop_front();
+		for (auto v : adj[u]) {
+			if (d[v] > -1) {
+				if (d[u] % 2 == d[v] % 2) {
+					result = false;
+					return;
+				}
+			} else {
+				q.push_back(v);
+				d[v] = d[u] + 1;
+			}
+		}
+	}
+	result = 1;
+	return;
 }
 
-int main(){
-    input();
-    int ans = 1;
-    for(int i = 1; i <= N; i++){
-        d[i] = -1;
-    }
-    for(int s = 1; s <= N; s++){
-        if(d[s] == -1){
-            if(BFS(s) == 0)
-                ans = 0;
-        }
-    }
-    cout << ans << endl;
-    return 0;
+void solve () {
+	BFS(1);
+	// for (int i = 1; i <= n; ++i) {
+	// 	if (d[i] == -1) {
+	// 		result = 0;
+	// 	}
+	// }
+}
+
+void input () {
+	scanf("%d%d", &n, &m);
+	int tmp_u, tmp_v;
+	for (int i = 0; i < m; ++i) {
+		scanf("%d%d", &tmp_u, &tmp_v);
+		adj[tmp_u].push_back(tmp_v);
+		adj[tmp_v].push_back(tmp_u);
+	}
+}
+
+int main () {
+	// freopen("inp", "r", stdin);
+	// freopen("out", "w", stdout);
+	input();
+	solve();
+	output();
+	return 0;
 }
