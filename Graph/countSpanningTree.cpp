@@ -25,7 +25,7 @@ void link(int x, int y){
 }
 
 void makeSet(int x){
-    p[x] = x;
+    p[x] = x; 
     r[x] = 0;
 }
 
